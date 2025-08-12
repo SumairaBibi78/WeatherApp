@@ -1,47 +1,82 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>Weather App</title>
   <link rel="icon" href="assets/icons/icons8-weather.svg" type="image/svg" />
-  <link rel="stylesheet" href="styles.css" type="text/css"/>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
 </head>
 
 <body>
+  
+  <!-- Background stack for cross-fade -->
+  <div id="background" aria-hidden="true"></div>
+
+  <!-- Application Header-->
+   <header class="app-header">
+    <div class="header-controls">
+      <!-- Theme toggle -->
+      <label class="switch" title="Toggle light/dark theme">
+        <input type="checkbox" id="themeToggle" />
+        <span class="slider"></span>
+        <span class="switch-label">Theme</span>
+      </label>
+
+      <!-- Temp unit toggle -->
+      <label class="switch" title="Toggle °C/°F">
+        <input type="checkbox" id="unitToggle" />
+        <span class="slider"></span>
+        <span class="switch-label">°C / °F</span>
+      </label>
+
+      <!-- Local time display for current city -->
+      <div class="clock" id="localTime" aria-live="polite">--:--</div>
+    </div>
+   </header>
 
   <div class="container">
     
     <h1>Weatherly</h1>
     
-    <!-- Theme Toggle -->
-    <div class="theme-toggle">
-      <label class="switch">
-        <input type="checkbox" id="themeToggle" />
-        <span class="slider"></span>
-      </label>
-      <span id="themeLabel">Light</span>
-    </div>
-    
     <!-- Search Bar -->
     <div class="search">
-      <input type="text" id="cityInput" placeholder="Enter city name..." />
-      <button id="searchBtn">Search</button>
+      <form id="searchForm" autocomplete="off">
+        <input type="text" id="cityInput" placeholder="Enter city name..." aria-label="City name"/>
+        <button id="submit" class="btn">Search</button>
+        <button type="button" id="locBtn" class="btn ghost">Use my location</button>
+      </form>
     </div>
 
     <!-- Weather Card -->
-    <div id="weatherCard" class="card hidden">
-      <div class="icon"><img id="weatherIcon" /></div>
-      <div class="details">
-        <h2 id="cityName"></h2>
-        <p id="weatherDesc"></p>
-        <p>Temperature: <span id="temp"></span>°C</p>
-        <p>Humidity: <span id="humidity"></span>%</p>
+    <section class="weather-card hidden" aria-live="polite">
+      <div class="card-inner">
+        <div class="top-row">
+          <div id="conditionIcon" class="icon" aria-hidden="true">⛅</div>
+          <h2 id="cityName">—</h2>
+        </div>
+
+        <div class="metrics">
+          <div class="temp">
+            <span id="temperature">—</span>
+            <span class="unit" id="tempUnit">°C</span>
+          </div>
+          <div class="meta">
+            <div><strong>Humidity:</strong> <span id="humidity">—</span>%</div>
+            <div><strong>Condition:</strong> <span id="conditionText">—</span></div>
+          </div>
+        </div>
+
+        <p id="errorMsg" class="error" role="alert" hidden></p>
       </div>
-    </div>
-    <p id="errorMsg" class="error hidden"></p>
+    </section>
   </div>
 
-  <script src="app.js"></script>
+  <footer class="app-footer">
+    <p>© 2025 Sumaira Bibi.</p>
+  </footer>
+
+  <script src="behav.js"></script>
 </body>
 </html>
