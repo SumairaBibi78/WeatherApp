@@ -1,14 +1,14 @@
 // behav.js
 //OpenWeatherMap API key
-const API_KEY = "YOUR_OPENWEATHERMAP_API_KEY"; // https://openweathermap.org/current
+const API_KEY = "api_key"; // https://openweathermap.org/current
 
 // State
 let state = {
   baseTempC: null, // store in Celsius, convert to F for toggle
-  unitIsF: false,
-  timezoneOffsetSec: 0,
+  unitIsF: false, //track whether user wants Fahrenheit
+  timezoneOffsetSec: 0, //offset from UTC in seconds for local time
   themeDark: false,
-  clockTimer: null
+  clockTimer: null //reference to interval for updating clock
 };
 
 // DOM
@@ -45,14 +45,16 @@ function init() {
 
   // Events
   els.form.addEventListener("submit", onSearch);
+  els.form.addEventListener("submit", showCard);
   els.locBtn.addEventListener("click", useGeolocation);
+  els.locBtn.addEventListener("click", showCard);
   els.themeToggle.addEventListener("change", onThemeToggle);
   els.unitToggle.addEventListener("change", onUnitToggle);
   window.addEventListener("scroll", onParallaxScroll, { passive: true });
   window.addEventListener("deviceorientation", onTilt, { passive: true });
 
   // Try geolocation on load, fallback to Karachi for first render
-  useGeolocation().catch(() => fetchByCity("Karachi"));
+  //useGeolocation().catch(() => fetchByCity("Karachi"));
 }
 
 function onThemeToggle(e) {
@@ -67,10 +69,13 @@ function onUnitToggle(e) {
   renderTemperature();
 }
 
+function showCard() {els.card.classList.add("visible");}
+
 async function onSearch(e) {
   e.preventDefault();
   const q = els.input.value.trim();
   if (!q) return;
+  showCard();
   await fetchByCity(q);
 }
 
@@ -158,12 +163,12 @@ function updateUI(data) {
 
 function renderTemperature() {
   if (state.baseTempC == null) {
-    els.temperature.textContent = "—";
+    els.temp.textContent = "—";
     els.tempUnit.textContent = state.unitIsF ? "°F" : "°C";
     return;
   }
   const val = state.unitIsF ? (state.baseTempC * 9/5 + 32) : state.baseTempC;
-  els.temperature.textContent = Math.round(val);
+  els.temp.textContent = Math.round(val);
   els.tempUnit.textContent = state.unitIsF ? "°F" : "°C";
 }
 
@@ -190,7 +195,7 @@ function startClock(timezoneOffsetSec) {
 
 function showError(msg) {
   els.cityName.textContent = "—";
-  els.temperature.textContent = "—";
+  els.temp.textContent = "—";
   els.humidity.textContent = "—";
   els.conditionText.textContent = "—";
   els.icon.textContent = "⚠️";
@@ -220,7 +225,7 @@ function pickBackground(main, isDay) {
   const m = (main || "").toLowerCase();
   if (m.includes("thunder")) return "assets/backgrs/thunderstorm.png";
   if (m.includes("drizzle") || m.includes("rain")) return "assets/backgrs/rainy.png";
-  if (m.includes("snow")) return "assets/backgrs/snowy";
+  if (m.includes("snow")) return "assets/backgrs/snowy.png";
   if (m.includes("mist") || m.includes("fog")) return "assets/backgrs/foggy.png";
   if (m.includes("sun")) return "assets/backgrs/sunny.png";
   if (m.includes("haze") || m.includes("smoke") || m.includes("dust")) return "assets/backgrs/hazy.png";

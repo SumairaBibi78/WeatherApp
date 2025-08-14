@@ -17,6 +17,7 @@
   <!-- Application Header-->
    <header class="app-header">
     <div class="header-controls">
+      
       <!-- Theme toggle -->
       <label class="switch" title="Toggle light/dark theme">
         <input type="checkbox" id="themeToggle" />
@@ -50,7 +51,7 @@
     </div>
 
     <!-- Weather Card -->
-    <section class="weather-card hidden" aria-live="polite">
+    <section class="weather-card hidden" id="weatherCard" aria-live="polite">
       <div class="card-inner">
         <div class="top-row">
           <div id="conditionIcon" class="icon" aria-hidden="true">⛅</div>
@@ -68,7 +69,7 @@
           </div>
         </div>
 
-        <p id="errorMsg" class="error" role="alert" hidden></p>
+        <p id="errorMsg" hidden class="error" role="alert"></p>
       </div>
     </section>
   </div>
@@ -77,6 +78,6 @@
     <p>© 2025 Sumaira Bibi.</p>
   </footer>
 
-  <script src="behav.js"></script>
+  <script src="behav.js" defer></script>
 </body>
 </html>
